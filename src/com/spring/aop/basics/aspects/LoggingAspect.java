@@ -23,10 +23,19 @@ public class LoggingAspect {
 		System.out.println("From before advice pointcut declaration");
 	}
 
-	// Example of PointCut declaration
-	@Pointcut("execution(public void addAccount())")
+	// Example of PointCut declaration for addAccount of AccountDAO class
+	@Pointcut("execution(* com.spring.aop.basics.dao.AccountDAO.addAccount())")
 	private void forDAOPackages() {
+	}
 
+	// Example of PointCut declaration for any getter
+	@Pointcut("execution(* get*(..))")
+	private void forGetters() {
+	}
+
+	@Before("forGetters()")
+	public void beforeAdviceGetter() {
+		System.out.println("From before advice getter method");
 	}
 
 }
