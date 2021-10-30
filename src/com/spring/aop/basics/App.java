@@ -11,9 +11,19 @@ public class App {
 		AnnotationConfigApplicationContext annotationConfigApplicationContext = new AnnotationConfigApplicationContext(
 				Config.class);
 		AccountDAO acccountBean = (AccountDAO) annotationConfigApplicationContext.getBean("accountDAO");
-		Account account = acccountBean.addAccount();
-		account.getDescription();
-		account.getName();
+
+		// Note that we have to register account class with spring and then only spring
+		// will inject advice to give methods(getter/setter) of bean
+		Account account = (Account) annotationConfigApplicationContext.getBean("account");
+		// Below code will not work as account pojo is not registered with spring
+		// Account account = new Account();
+
+		account.setName("I.T. Account");
+		account.setDescription("I.T. Account manages for I.T. resources");
+
+		Account retrievedAccount = acccountBean.addAccount(account);
+		retrievedAccount.getDescription();
+		retrievedAccount.getName();
 		annotationConfigApplicationContext.close();
 	}
 

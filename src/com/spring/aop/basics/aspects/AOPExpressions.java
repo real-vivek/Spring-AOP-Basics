@@ -6,7 +6,7 @@ import org.aspectj.lang.annotation.Pointcut;
 @Aspect
 public class AOPExpressions {
 
-	@Pointcut("execution(* com.spring.aop.basics.dao.AccountDAO.addAccount())")
+	@Pointcut("execution(* com.spring.aop.basics.dao.AccountDAO.addAccount(com.spring.aop.basics.beans.Account))")
 	public void forDAOPackages() {
 	}
 
