@@ -33,9 +33,10 @@ public class LoggingAspect {
 	private void forGetters() {
 	}
 
-	@Before("forGetters()")
+	// Example of combining PointCut declarations
+	@Before("forDAOPackages() || forGetters()")
 	public void beforeAdviceGetter() {
-		System.out.println("From before advice getter method");
+		System.out.println("From before advice combining pointcut declarations");
 	}
 
 }
