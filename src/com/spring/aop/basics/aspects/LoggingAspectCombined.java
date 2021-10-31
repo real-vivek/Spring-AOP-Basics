@@ -51,29 +51,39 @@ public class LoggingAspectCombined {
 				+ " the exception thrown is:" + theexc);
 	}
 
-	// Example of after advice. It acts like finally block it runs irrespective of success or failure of method
-	// After advice is called after the after throwing advice/after returning advice from spring 5.2.7 and later
-	// It doesn't have access to exception. Our code should be independent of happy path or exception
+	// Example of after advice. It acts like finally block it runs irrespective of
+	// success or failure of method
+	// After advice is called after the after throwing advice/after returning advice
+	// from spring 5.2.7 and later
+	// It doesn't have access to exception. Our code should be independent of happy
+	// path or exception
 	@After(value = "com.spring.aop.basics.aspects.AOPExpressions.forDAOPackages() || com.spring.aop.basics.aspects.AOPExpressions.forGetters()")
 	public void afterThrwoingGetterAndDAO(JoinPoint joinPoint) {
 		System.out.println("From after advice");
 		System.out.println("The after advice is from the method: " + joinPoint.getSignature().toShortString());
 	}
-	
+
 	// Example of Around advice
 	// Executes before and after the method
-	// Executes after the after advice and before the berfore advice
+	// Executes after the after advice and before the before advice
+	// We have to return the retrieved object from proceed 
 	@Around(value = "com.spring.aop.basics.aspects.AOPExpressions.forDAOPackages()")
-	public void afterThrwoingGetterAndDAO(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+	public Object afterThrwoingGetterAndDAO(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		System.out.println("From around advice");
-		
-		long methodStartTime = System.currentTimeMillis();
-		
-		// proceed starts the execution of method
-		proceedingJoinPoint.proceed();
 
+		Object result;
+		long methodStartTime = System.currentTimeMillis();
+
+		try {
+			// proceed starts the execution of method
+			result = proceedingJoinPoint.proceed();
+			System.out.println("Got the following after method execution: "+result);
+		} catch (Throwable throwable) {
+			System.out.println("@Around advice caught exception: " + throwable);
+			result=null;
+		}
 		long methodEndTime = System.currentTimeMillis();
-		
-		System.out.println("The method execution took: "+ (methodEndTime-methodStartTime)+" milliseconds" );
+		System.out.println("The method execution took: " + (methodEndTime - methodStartTime) + " milliseconds");
+		return result;
 	}
 }
