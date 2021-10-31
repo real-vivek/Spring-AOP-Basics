@@ -3,9 +3,11 @@ package com.spring.aop.basics.aspects;
 import java.util.Arrays;
 
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.core.annotation.Order;
@@ -56,5 +58,22 @@ public class LoggingAspectCombined {
 	public void afterThrwoingGetterAndDAO(JoinPoint joinPoint) {
 		System.out.println("From after advice");
 		System.out.println("The after advice is from the method: " + joinPoint.getSignature().toShortString());
+	}
+	
+	// Example of Around advice
+	// Executes before and after the method
+	// Executes after the after advice and before the berfore advice
+	@Around(value = "com.spring.aop.basics.aspects.AOPExpressions.forDAOPackages()")
+	public void afterThrwoingGetterAndDAO(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+		System.out.println("From around advice");
+		
+		long methodStartTime = System.currentTimeMillis();
+		
+		// proceed starts the execution of method
+		proceedingJoinPoint.proceed();
+
+		long methodEndTime = System.currentTimeMillis();
+		
+		System.out.println("The method execution took: "+ (methodEndTime-methodStartTime)+" milliseconds" );
 	}
 }
