@@ -10,6 +10,7 @@ import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +21,9 @@ import com.spring.aop.basics.beans.Account;
 @Order(2)
 public class LoggingAspectCombined {
 
+	@Autowired
+	private Account dummyAccount;
+	
 	// Example of combining PointCut declarations
 	@Before("com.spring.aop.basics.aspects.AOPExpressions.forDAOPackages() || com.spring.aop.basics.aspects.AOPExpressions.forGetters()")
 	public void beforeAdviceGetterAndDAO(JoinPoint joinPoint) {
@@ -81,9 +85,10 @@ public class LoggingAspectCombined {
 		} catch (Throwable throwable) {
 			// Exception propagation can be stopped from here . Also new exception can be
 			// thrown from here
-			// However the advices that we have written for the code after this don't work
+			// However the advices that we have written for the code after this don't work if we create the object using new keyword
 			System.out.println("@Around advice caught exception: " + throwable);
-			Account dummyAccount = new Account();
+			// We cannot use the code below because we will be creating object and not spring so it will not follow aspects
+			// Account dummyAccount = new Account();
 			dummyAccount.setName("H.R. Account");
 			dummyAccount.setDescription("H.R. Account created from Around advice");
 			result = dummyAccount;
