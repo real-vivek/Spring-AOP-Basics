@@ -66,7 +66,7 @@ public class LoggingAspectCombined {
 	// Example of Around advice
 	// Executes before and after the method
 	// Executes after the after advice and before the before advice
-	// We have to return the retrieved object from proceed 
+	// We have to return the retrieved object from proceed
 	@Around(value = "com.spring.aop.basics.aspects.AOPExpressions.forDAOPackages()")
 	public Object afterThrwoingGetterAndDAO(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 		System.out.println("From around advice");
@@ -77,13 +77,20 @@ public class LoggingAspectCombined {
 		try {
 			// proceed starts the execution of method
 			result = proceedingJoinPoint.proceed();
-			System.out.println("Got the following after method execution: "+result);
+			System.out.println("Got the following after method execution: " + result);
 		} catch (Throwable throwable) {
+			// Exception propagation can be stopped from here . Also new exception can be
+			// thrown from here
+			// However the advices that we have written for the code after this don't work
 			System.out.println("@Around advice caught exception: " + throwable);
-			result=null;
+			Account dummyAccount = new Account();
+			dummyAccount.setName("H.R. Account");
+			dummyAccount.setDescription("H.R. Account created from Around advice");
+			result = dummyAccount;
 		}
 		long methodEndTime = System.currentTimeMillis();
 		System.out.println("The method execution took: " + (methodEndTime - methodStartTime) + " milliseconds");
+		System.out.println("Returning following from around advice: " + result);
 		return result;
 	}
 }

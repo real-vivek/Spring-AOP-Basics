@@ -23,7 +23,7 @@ public class App {
 
 		try {
 			// Toggle the 2nd argument of addAccount method to true to throw exception
-			Account retrievedAccount = acccountBean.addAccount(account, false);
+			Account retrievedAccount = acccountBean.addAccount(account, true);
 			retrievedAccount.getDescription();
 			retrievedAccount.getName();
 		} catch (Exception e) {
