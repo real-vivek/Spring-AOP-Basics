@@ -4,6 +4,7 @@ import java.util.Arrays;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.core.annotation.Order;
@@ -35,5 +36,12 @@ public class LoggingAspectCombined {
 	public void afterAdviceGetterAndDAO(JoinPoint joinPoint, Account account) {
 		System.out.println("From after retruning advice");
 		System.out.println("The return value is " + account);
+	}
+
+	@AfterThrowing(value = "com.spring.aop.basics.aspects.AOPExpressions.forDAOPackages() || com.spring.aop.basics.aspects.AOPExpressions.forGetters()", throwing = "theexc")
+	public void afterThrwoingGetterAndDAO(JoinPoint joinPoint, Exception theexc) {
+		System.out.println("From after throwing advice");
+		System.out.println("The expection thrown is from the method: " + joinPoint.getSignature().toShortString()
+				+ " the exception thrown is:" + theexc);
 	}
 }
