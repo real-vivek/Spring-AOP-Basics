@@ -22,14 +22,14 @@ public class App {
 		account.setDescription("I.T. Account manages for I.T. resources");
 
 		try {
-			Account retrievedAccount = acccountBean.addAccount(account, true);
+			// Toggle the 2nd argument of addAccount method to true to throw exception
+			Account retrievedAccount = acccountBean.addAccount(account, false);
 			retrievedAccount.getDescription();
 			retrievedAccount.getName();
 		} catch (Exception e) {
 			System.out.println("Catch the exception in main App: " + e);
 		}
 
-		
 		annotationConfigApplicationContext.close();
 	}
 
